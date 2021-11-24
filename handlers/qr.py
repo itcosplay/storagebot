@@ -1,7 +1,7 @@
 import qrcode
 import secrets
 import string
-
+import os
 from PIL import Image, ImageDraw
 
 from aiogram import types
@@ -49,4 +49,8 @@ async def get_qr(message: types.Message):
     await bot.send_photo(
         chat_id=message.from_user.id,
         photo=photo,
+
     )
+
+    path = os.path.join("./data/qrcode.jpg")
+    os.remove(path)
