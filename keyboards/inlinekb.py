@@ -48,3 +48,70 @@ def what_to_store_kb():
     )
 
     return keyboard
+
+
+def season_things_kb():
+    keyboard = InlineKeyboardMarkup()
+    
+    keyboard.add (
+        InlineKeyboardButton (
+            text='лыжи',
+            callback_data='ski'
+        )
+    )
+
+    keyboard.add (
+        InlineKeyboardButton (
+            text='сноуборд',
+            callback_data='snowboard'
+        )
+    )
+
+    keyboard.add (
+        InlineKeyboardButton (
+            text='велосипед',
+            callback_data='bicycle'
+        )
+    )
+
+    keyboard.add (
+        InlineKeyboardButton (
+            text='колеса',
+            callback_data='wheel'
+        )
+    )
+
+    return keyboard
+
+
+def weeks_or_months_kb():
+    keyboard = InlineKeyboardMarkup()
+    
+    keyboard.add (
+        InlineKeyboardButton (
+            text='недели',
+            callback_data='weeks'
+        )
+    )
+
+    keyboard.add (
+        InlineKeyboardButton (
+            text='месяцы',
+            callback_data='months'
+        )
+    )
+
+    return keyboard
+
+
+def pay_kb():
+    keyboard = InlineKeyboardMarkup()
+    
+    keyboard.add (
+        InlineKeyboardButton (
+            text='забронировать',
+            callback_data='book'
+        )
+    )
+
+    return keyboard
