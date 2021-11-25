@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 aiogram = "==2.16"
 environs = "==9.3.5"
+geopy = "*"
 
 [dev-packages]
 autopep8 = "*"
