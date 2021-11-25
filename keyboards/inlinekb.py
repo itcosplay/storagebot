@@ -1,47 +1,34 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.types import InlineKeyboardButton
+from data import storage_boxes
 
 
 def select_storage_kb():
     keyboard = InlineKeyboardMarkup()
-    
-    keyboard.add (
-        InlineKeyboardButton (
-            text='адрес склада 1',
-            callback_data='adress_1'
-        )
-    )
 
-    keyboard.add (
-        InlineKeyboardButton (
-            text='адрес склада 2',
-            callback_data='adress_2'
+    for box_id, box_location in storage_boxes.items():
+        keyboard.add(
+            InlineKeyboardButton(
+                text=box_location.get('address'),
+                callback_data=box_id
+            )
         )
-    )
-
-    keyboard.add (
-        InlineKeyboardButton (
-            text='адрес склада 3',
-            callback_data='adress_3'
-        )
-    )
-
 
     return keyboard
 
 
 def what_to_store_kb():
     keyboard = InlineKeyboardMarkup()
-    
-    keyboard.add (
-        InlineKeyboardButton (
+
+    keyboard.add(
+        InlineKeyboardButton(
             text='сезонные вещи',
             callback_data='season_things'
         )
     )
 
-    keyboard.add (
-        InlineKeyboardButton (
+    keyboard.add(
+        InlineKeyboardButton(
             text='другое',
             callback_data='another_things'
         )
@@ -52,30 +39,30 @@ def what_to_store_kb():
 
 def season_things_kb():
     keyboard = InlineKeyboardMarkup()
-    
-    keyboard.add (
-        InlineKeyboardButton (
+
+    keyboard.add(
+        InlineKeyboardButton(
             text='лыжи',
             callback_data='ski'
         )
     )
 
-    keyboard.add (
-        InlineKeyboardButton (
+    keyboard.add(
+        InlineKeyboardButton(
             text='сноуборд',
             callback_data='snowboard'
         )
     )
 
-    keyboard.add (
-        InlineKeyboardButton (
+    keyboard.add(
+        InlineKeyboardButton(
             text='велосипед',
             callback_data='bicycle'
         )
     )
 
-    keyboard.add (
-        InlineKeyboardButton (
+    keyboard.add(
+        InlineKeyboardButton(
             text='колеса',
             callback_data='wheel'
         )
@@ -86,16 +73,16 @@ def season_things_kb():
 
 def weeks_or_months_kb():
     keyboard = InlineKeyboardMarkup()
-    
-    keyboard.add (
-        InlineKeyboardButton (
+
+    keyboard.add(
+        InlineKeyboardButton(
             text='недели',
             callback_data='weeks'
         )
     )
 
-    keyboard.add (
-        InlineKeyboardButton (
+    keyboard.add(
+        InlineKeyboardButton(
             text='месяцы',
             callback_data='months'
         )
@@ -106,9 +93,9 @@ def weeks_or_months_kb():
 
 def pay_kb():
     keyboard = InlineKeyboardMarkup()
-    
-    keyboard.add (
-        InlineKeyboardButton (
+
+    keyboard.add(
+        InlineKeyboardButton(
             text='забронировать',
             callback_data='book'
         )
