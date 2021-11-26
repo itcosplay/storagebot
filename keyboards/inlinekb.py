@@ -76,7 +76,7 @@ def season_things_kb():
 
     keyboard.add (
         InlineKeyboardButton (
-            text='колеса',
+            text='комплект колес',
             callback_data='wheel'
         )
     )

@@ -1,23 +1,38 @@
 from aiogram import types
 from aiogram.dispatcher.filters import Command
+from aiogram.dispatcher.storage import FSMContext
 from aiogram.types.message import ContentType
 
+from states import NaturalPerson
 from loader import dp, bot
 from data import yookassa_test_token
+from data import price
+from utils import get_final_sum
 
 
-@dp.message_handler(Command(commands='pay'))
-async def get_pay(message: types.Message):
+# @dp.message_handler(Command(commands='pay'))
+@dp.message_handler(state=NaturalPerson.birthday)
+async def get_pay(message: types.Message, state=FSMContext):
     """send payment invoice"""
+    state_data = await state.get_data()
+    final_sum = get_final_sum(state_data, price)
+    final_sum = str(final_sum) + '00'
+    final_sum = int(final_sum)
     await bot.delete_message(message.from_user.id, message.message_id)
-    await bot.send_invoice(chat_id=message.from_user.id,
-                           title='Оплатить услугу',
-                           description='Описание заказа',
-                           payload='storage-invoice',
-                           provider_token=yookassa_test_token,
-                           currency="RUB",
-                           start_parameter='unique-deep-linking-parameter',
-                           prices=[{"label": "руб", "amount": 100000}])
+    
+    await bot.send_invoice (
+        chat_id=message.from_user.id,
+        title='Оплатить услугу',
+        description='Бронь места на складе',
+        payload='storage-invoice',
+        provider_token=yookassa_test_token,
+        currency="RUB",
+        start_parameter='unique-deep-linking-parameter',
+        prices=[{
+            "label": "руб",
+            "amount": final_sum
+        }]
+    )
 
 
 @dp.pre_checkout_query_handler()

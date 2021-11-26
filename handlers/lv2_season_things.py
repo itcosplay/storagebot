@@ -1,13 +1,14 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from data import season_things_price
+from data import price
 from loader import dp, bot
 from states import NaturalPerson
 from utils import validate_thing_amount
 from utils import validate_month_amount
 from utils import validate_weeks_amount
 from utils import get_season_things_price
+from utils import message_before_booking
 from keyboards import weeks_or_months_kb
 from keyboards import pay_kb
 
@@ -47,7 +48,7 @@ async def get_storage_date(message:types.Message, state:FSMContext):
     price_text = get_season_things_price (
         thing, 
         amount, 
-        season_things_price
+        price
     )
     
     if thing == 'wheel':
@@ -113,7 +114,8 @@ async def set_month_amount(message:types.Message, state:FSMContext):
     await state.update_data(month_amount=month_amount)
     await state.update_data(weeks_amount=0)
 
-    message_to_user = 'Заказ сформирован'
+    state_data = await state.get_data()
+    message_to_user = message_before_booking(state_data)
 
     await message.answer (
         message_to_user,
@@ -139,7 +141,8 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
     await state.update_data(month_amount=0)
     await state.update_data(weeks_amount=weeks_amount)
 
-    message_to_user = 'заказ сформирован'
+    state_data = await state.get_data()
+    message_to_user = message_before_booking(state_data)
 
     await message.answer (
         message_to_user,
