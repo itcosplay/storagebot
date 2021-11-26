@@ -6,6 +6,8 @@ from .validates_user_input import validate_cell_period
 from .get_season_things_price import get_season_things_price
 from .calc_sum import get_final_sum
 from .messages_to_user import message_before_booking
+from .qr_processor import get_qr
+from .qr_processor import delete_user_qr
 
 __all__ = [
     validate_thing_amount,
@@ -15,5 +17,7 @@ __all__ = [
     validate_cell_period,
     get_season_things_price,
     get_final_sum,
-    message_before_booking
+    message_before_booking,
+    get_qr,
+    delete_user_qr
 ]

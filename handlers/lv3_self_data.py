@@ -50,6 +50,8 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
     await state.update_data(message_to_delete=message_data.message_id)
     await NaturalPerson.birthday.set()
     
+# @dp.message_handler(state=NaturalPerson.birthday)
+
 
 # @dp.message_handler(state=NaturalPerson.birthday)
 # async def set_weeks_amount(message:types.Message, state:FSMContext):
@@ -62,5 +64,5 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
 #     message_data = await message.answer('ТУТ ОПЛАЧИВАЕТСЯ ЗАКАЗ')
 #     await state.update_data(message_to_delete=message_data.message_id)
 
-    # await state.set_state('payments')
-    # await state.finish()
+#     await state.set_state('payments')
+#     await state.finish()

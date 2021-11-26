@@ -12,6 +12,7 @@ from keyboards import season_things_kb
 
 @dp.message_handler(CommandStart())
 async def get_select_storage(message:types.Message, state:FSMContext):
+    await bot.delete_message(message.chat.id, message.message_id)
     text = 'Привет! Я помогу вам арендовать личную ячейку ' + \
     ' для хранения вещей. Давайте посмотрим адреса складов, ' + \
     'чтобы выбрать ближайший!'
