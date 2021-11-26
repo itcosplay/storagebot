@@ -1,11 +1,11 @@
-def get_season_things_price(thing, amount, season_things_price):
+def get_season_things_price(thing, amount, price):
+
     if thing == 'wheel':
-        wheel_price = season_things_price['wheel'] * amount
+        wheel_price = price[thing]['month'] * amount
         return f'Стоимость составит {wheel_price}/месяц'
 
     else:
-        other_thing_price_week = season_things_price[thing]['week'] * amount
-        other_thing_price_month = season_things_price[thing]['month'] * amount
-        
+        other_thing_price_week = price[thing]['week'] * amount
+        other_thing_price_month = price[thing]['month'] * amount
         return f'Стоимость составит {other_thing_price_week} р./неделю' + \
             f' или {other_thing_price_month} р./месяц'

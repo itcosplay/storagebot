@@ -5,6 +5,7 @@ from loader import dp, bot
 from states import NaturalPerson
 from utils import validate_size_cell
 from utils import validate_cell_period
+from utils import message_before_booking
 from keyboards import pay_kb
 
 
@@ -45,7 +46,8 @@ async def set_cell_period(message:types.Message, state:FSMContext):
 
     await state.update_data(cell_period=cell_period)
 
-    message_to_user = 'заказ сформирован'
+    state_data = await state.get_data()
+    message_to_user = message_before_booking(state_data)
 
     await message.answer (
         message_to_user,
