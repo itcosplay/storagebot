@@ -2,14 +2,17 @@ import math
 
 import geopy.distance
 from data import storage_boxes
+from states import NaturalPerson
 
 
-def get_nearest_storage_boxes(user_location=(50.388833, 8.461889)):
+def get_nearest_storage_boxes(user_location):
     """Get nearest (in ascending order) storage boxes to user
 
     The function calculates for each given box the distance to the user.
     Afterward sorts it by distance and creates new ordered dictionary of boxes.
     """
+    if not user_location:
+        return storage_boxes
     boxes_with_distance = {}
     for box_id, box_location in storage_boxes.items():
         distance = geopy.distance.distance(user_location,
@@ -22,11 +25,6 @@ def get_nearest_storage_boxes(user_location=(50.388833, 8.461889)):
     sorted_boxes = {}
     for box_id, box_distance in sorted_boxes_with_distance.items():
         sorted_boxes[box_id] = storage_boxes[box_id]
-        sorted_boxes[box_id]['distance_to_user'] = math.ceil(box_distance)
+        sorted_boxes[box_id]['distance_to_user'] = f'{math.ceil(box_distance)} км'
 
     return sorted_boxes
-
-
-if __name__ == '__main__':
-    coords_1 = (50.388833, 8.461889)
-    sorted_boxes = get_nearest_storage_boxes(coords_1)

@@ -1,20 +1,18 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.types import InlineKeyboardButton
-from data import storage_boxes
 from utils.get_nearest_storage_boxes import get_nearest_storage_boxes
 
 
-def select_storage_kb():
+def select_storage_kb(location):
     keyboard = InlineKeyboardMarkup()
 
-    for box_id, box_location in get_nearest_storage_boxes().items():
+    for box_id, box_location in get_nearest_storage_boxes(location).items():
         keyboard.add(
             InlineKeyboardButton(
-                text=f'{box_location.get("address")}, {box_location.get("distance_to_user")} км',
-                callback_data=box_id
+                text=f'{box_location.get("address")}, {box_location.get("distance_to_user")}',
+                callback_data=box_id,
             )
         )
-
     return keyboard
 
 
