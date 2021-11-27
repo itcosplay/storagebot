@@ -4,6 +4,6 @@ from environs import Env
 env = Env()
 env.read_env()
 
-bot_token = env('BOT_TOKEN')
+bot_token = '2136993706:AAFy2qLZkZPZLcDWGgltR0BGCtT0cIHt73M'
 
-yookassa_test_token = env('YOOKASSA_TEST_TOKEN')
+yookassa_test_token = '2136993706:AAFy2qLZkZPZLcDWGgltR0BGCtT0cIHt73M'
