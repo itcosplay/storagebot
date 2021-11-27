@@ -14,9 +14,9 @@ from keyboards import get_location_kb
 @dp.message_handler(CommandStart())
 async def get_location(message: types.Message, state: FSMContext):
     await bot.delete_message(message.chat.id, message.message_id)
-    text = 'Привет! Я помогу вам арендовать личную ячейку ' + \
-        ' для хранения вещей. Давайте посмотрим адреса складов. ' + \
-        'Поделитесь своей локацией, чтобы выбрать ближайший!'
+    text = ('Привет! Я помогу вам арендовать личную ячейку '
+            'для хранения вещей. Давайте посмотрим адреса складов. '
+            'Поделитесь своей локацией, чтобы выбрать ближайший!')
 
     await message.answer(text=text, reply_markup=get_location_kb())
     await NaturalPerson.location.set()
