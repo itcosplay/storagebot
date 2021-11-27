@@ -101,3 +101,16 @@ def pay_kb():
     )
 
     return keyboard
+
+
+def back_kb():
+    keyboard = InlineKeyboardMarkup()
+
+    keyboard.add(
+        InlineKeyboardButton(
+            text='Назад',
+            callback_data='back'
+        )
+    )
+
+    return keyboard
