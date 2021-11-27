@@ -14,5 +14,6 @@ class NaturalPerson(StatesGroup):
     fio = State()
     passport = State()
     birthday = State()
-    
+    location = State()
+
     message_to_delete = State()
