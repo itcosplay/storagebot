@@ -4,6 +4,7 @@ from .validates_user_input import validate_weeks_amount
 from .validates_user_input import validate_size_cell
 from .validates_user_input import validate_cell_period
 from .get_season_things_price import get_season_things_price
+from .get_nearest_storage_boxes import get_nearest_storage_boxes
 from .calc_sum import get_final_sum
 from .messages_to_user import message_before_booking
 from .qr_processor import get_qr
@@ -16,6 +17,7 @@ __all__ = [
     validate_size_cell,
     validate_cell_period,
     get_season_things_price,
+    get_nearest_storage_boxes,
     get_final_sum,
     message_before_booking,
     get_qr,
