@@ -3,6 +3,8 @@ from .validates_user_input import validate_month_amount
 from .validates_user_input import validate_weeks_amount
 from .validates_user_input import validate_size_cell
 from .validates_user_input import validate_cell_period
+from .validates_user_input import validate_user_name
+from .validates_user_input import validate_user_birthday
 from .get_season_things_price import get_season_things_price
 from .get_nearest_storage_boxes import get_nearest_storage_boxes
 from .calc_sum import get_final_sum
@@ -25,5 +27,7 @@ __all__ = [
     get_qr,
     delete_user_qr,
     get_qr_date,
-    get_costs_cell_without_period
+    get_costs_cell_without_period,
+    validate_user_name,
+    validate_user_birthday,
 ]
