@@ -8,6 +8,7 @@ from utils import validate_size_cell
 from utils import validate_cell_period
 from utils import message_before_booking
 from utils import get_costs_cell_without_period
+from utils import get_final_sum
 from keyboards import pay_kb
 from keyboards import back_kb
 
@@ -85,6 +86,9 @@ async def set_cell_period(message:types.Message, state:FSMContext):
         return
 
     await state.update_data(cell_period=cell_period)
+    cost_first_month, cost_other_month = get_costs_cell_without_period(state_data, price)
+    final_sum = cost_first_month + cost_other_month * (cell_period - 1)
+    await state.update_data(final_sum=final_sum)
 
     state_data = await state.get_data()
     message_to_user = message_before_booking(state_data)
