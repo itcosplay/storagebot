@@ -34,7 +34,7 @@ async def get_pay(message: types.Message, state: FSMContext):
     message_data = await bot.send_invoice(
         chat_id=message.from_user.id,
         title='Оплатить услугу',
-        description='Бронь места на складе',
+        description= 'Бронь места на складе',
         payload='storage-invoice',
         provider_token=yookassa_test_token,
         currency="RUB",

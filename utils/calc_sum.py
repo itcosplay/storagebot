@@ -21,7 +21,10 @@ def get_costs_cell_without_period(state, price):
     cost_other_month = price['ceel']['other_sq_m']
     cost_other_month = cost_other_month * cell_size
 
+
     return cost_first_month, cost_other_month
+
+
 
 
 # season_things_price = {

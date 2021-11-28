@@ -20,10 +20,29 @@ async def set_date_from_buttons(
     await call.answer()
     await call.message.delete()
 
-    message_data = await call.message.answer('Введите ФИО')
-    await state.update_data(message_to_delete=message_data.message_id)
+    if call.data == 'book':
 
+        message_data = await call.message.answer('Введите ФИО')
+        await state.update_data(message_to_delete=message_data.message_id)
+
+        await NaturalPerson.fio.set()
+
+    else:
+
+        message_data = await call.message.answer('Введите промокод')
+        await state.update_data(message_to_delete=message_data.message_id)
+
+        await NaturalPerson.promo.set()
+
+@dp.message_handler(state=NaturalPerson.promo)
+async def set_weeks_amount(message:types.Message, state:FSMContext):
+    state_data = await state.get_data()
+    await bot.delete_message(message.chat.id, state_data['message_to_delete'])
+    await message.delete()
+
+    await state.update_data(promo=message.text)
     await NaturalPerson.fio.set()
+
 
 
 @dp.message_handler(state=NaturalPerson.fio)
