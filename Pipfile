@@ -25,6 +25,7 @@ typing-extensions = "==4.0.0"
 yarl = "==1.7.2"
 Babel = "==2.9.1"
 Pillow = "==8.4.0"
+python-dateutil = "*"
 
 [dev-packages]
 autopep8 = "*"

@@ -1,5 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.types import InlineKeyboardButton
+from geopy import distance
 from utils.get_nearest_storage_boxes import get_nearest_storage_boxes
 
 
@@ -7,12 +8,24 @@ def select_storage_kb(location):
     keyboard = InlineKeyboardMarkup()
 
     for box_id, box_location in get_nearest_storage_boxes(location).items():
-        keyboard.add(
-            InlineKeyboardButton(
-                text=f'{box_location.get("address")}, {box_location.get("distance_to_user")}',
-                callback_data=box_id,
+        box_address = box_location.get("address")
+        distance_to_user = box_location.get("distance_to_user")
+
+        if distance_to_user:
+            keyboard.add(
+                InlineKeyboardButton(
+                    text=(f'{box_address}, {distance_to_user}'),
+                    callback_data=box_id,
+                )
             )
-        )
+        else:
+            keyboard.add(
+                InlineKeyboardButton(
+                    text=box_address,
+                    callback_data=box_id,
+                )
+            )
+
     return keyboard
 
 

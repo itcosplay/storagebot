@@ -14,18 +14,21 @@ from keyboards import get_location_kb
 @dp.message_handler(CommandStart())
 async def get_location(message: types.Message, state: FSMContext):
     await bot.delete_message(message.chat.id, message.message_id)
-    text = 'Привет! Я помогу вам арендовать личную ячейку ' + \
-        ' для хранения вещей. Давайте посмотрим адреса складов. ' + \
-        'Поделитесь своей локацией, чтобы выбрать ближайший!'
+    text = ('Привет! Я помогу вам арендовать личную ячейку '
+            'для хранения вещей. Давайте посмотрим адреса складов. '
+            'Поделитесь своей локацией, чтобы выбрать ближайший!')
 
     await message.answer(text=text, reply_markup=get_location_kb())
     await NaturalPerson.location.set()
 
 
-@dp.message_handler(state=NaturalPerson.location, content_types=['location'])
+@dp.message_handler(state=NaturalPerson.location, content_types=['location', 'text'])
 async def get_select_storage(message: types.Message, state: FSMContext):
-    location = (message.location.latitude, message.location.longitude)
-    await state.update_data(location=location)
+    location = message.location
+    if location:
+        location = (location.latitude, location.longitude)
+        await state.update_data(location=location)
+
     await bot.send_message(
         chat_id=message.from_user.id,
         text='Выбери ближаший склад',
