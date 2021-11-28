@@ -8,6 +8,7 @@ from loader import dp, bot
 from data import yookassa_test_token
 from utils import get_qr
 from utils import delete_user_qr
+from utils import get_qr_date
 
 
 @dp.message_handler(state=NaturalPerson.birthday)
@@ -42,22 +43,24 @@ async def process_pre_checkout_query(pre_checkput_query: types.PreCheckoutQuery,
     """Do final confirmation to complete payment process."""
     state_data = await state.get_data()
     await bot.delete_message(pre_checkput_query.from_user.id, state_data['message_to_delete'])
-    
     await bot.answer_pre_checkout_query(pre_checkput_query.id, ok=True)
-    await state.finish()
+    await state.reset_state(with_data=False)
 
 
 @dp.message_handler(content_types=ContentType.SUCCESSFUL_PAYMENT)
-async def process_afterpayment(message: types.Message):
+async def process_afterpayment(message: types.Message, state: FSMContext):
     """Process successful payment."""
     if message.successful_payment.invoice_payload == 'storage-invoice':
         await bot.send_message(message.from_user.id, "===========\n===========")
         await bot.send_message(message.from_user.id, "Заказ оплачен! :)")
+        state_data = await state.get_data()
+        qr_date = get_qr_date(state_data)
+        caption = f'Ваш доступ на склад до {qr_date}'
         photo = get_qr(message.from_user.id)
         await bot.send_photo (
             message.from_user.id,
             photo=photo,
-            caption='Ваш доступ на склад'
+            caption=caption
         )
         await bot.send_message(message.from_user.id, "===========\n===========")
         delete_user_qr(message.from_user.id)

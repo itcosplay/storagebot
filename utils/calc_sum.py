@@ -13,6 +13,17 @@ def get_final_sum(state, price):
     return final_sum
 
 
+def get_costs_cell_without_period(state, price):
+    cell_size = state['cell_size']
+    cost_first_month = price['ceel']['first_sq_m']
+    cost_first_month = cost_first_month * cell_size
+
+    cost_other_month = price['ceel']['other_sq_m']
+    cost_other_month = cost_other_month * cell_size
+
+    return cost_first_month, cost_other_month
+
+
 # season_things_price = {
 #     'ski': {
 #         'week': 100,
