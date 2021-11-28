@@ -21,6 +21,11 @@ async def set_cell_size(message:types.Message, state:FSMContext):
     cell_size = validate_size_cell(message.text)
 
     if cell_size is False:
+        message_data = await message.answer(
+            'Пожалуйста, введите размер ячеки цифрой от 1 до 10'
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.cell_size.set()
         return
 
     await state.update_data(cell_size=cell_size)
@@ -69,10 +74,14 @@ async def set_cell_period(message:types.Message, state:FSMContext):
     state_data = await state.get_data()
     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
     await message.delete()
-
     cell_period = validate_cell_period(message.text)
 
     if cell_period is False:
+        message_data = await message.answer(
+            'Пожалуйста, введите период хранения цифрой от 1 до 12'
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.cell_period.set()
         return
 
     await state.update_data(cell_period=cell_period)

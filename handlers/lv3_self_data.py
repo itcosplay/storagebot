@@ -3,6 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from loader import dp, bot
 from states import NaturalPerson
+from utils import validate_user_name
 # from utils import validate_thing_amount
 # from utils import validate_month_amount
 # from utils import validate_weeks_amount
@@ -12,9 +13,9 @@ from states import NaturalPerson
 
 
 @dp.callback_query_handler(state='self_data')
-async def set_date_from_buttons (
-    call:types.CallbackQuery,
-    state:FSMContext
+async def set_date_from_buttons(
+    call: types.CallbackQuery,
+    state: FSMContext
 ):
     await call.answer()
     await call.message.delete()
@@ -45,10 +46,17 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
 
 
 @dp.message_handler(state=NaturalPerson.fio)
-async def set_weeks_amount(message:types.Message, state:FSMContext):
+async def set_weeks_amount(message: types.Message, state: FSMContext):
     state_data = await state.get_data()
     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
     await message.delete()
+    if not validate_user_name(message.text):
+        message_data = await message.answer(
+            text=('Не получилось обработать данные. \n'
+                  'Введите ФИО, как у вас в паспорте.')
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        return
 
     await state.update_data(fio=message.text)
 
@@ -58,17 +66,17 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
 
 
 @dp.message_handler(state=NaturalPerson.passport)
-async def set_weeks_amount(message:types.Message, state:FSMContext):
+async def set_weeks_amount(message: types.Message, state: FSMContext):
     state_data = await state.get_data()
     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
     await message.delete()
 
     await state.update_data(passport=message.text)
 
-    message_data = await message.answer('Введите дату рождения')
+    message_data = await message.answer('Введите дату рождения в формате дд.мм.гггг')
     await state.update_data(message_to_delete=message_data.message_id)
     await NaturalPerson.birthday.set()
-    
+
 # @dp.message_handler(state=NaturalPerson.birthday)
 
 

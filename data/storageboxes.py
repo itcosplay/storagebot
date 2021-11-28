@@ -1,10 +1,10 @@
 storage_boxes = {
     'address_1': {
-        'address': 'Центральная ул., 63',
+        'address': 'Центральная ул. 63',
         'coordinates': (51.656613, 39.085303),
     },
     'address_2': {
-        'address': 'ул. Дзержинского 2,',
+        'address': 'ул. Дзержинского 2',
         'coordinates': (51.488416, 39.221721),
     },
     'address_3': {

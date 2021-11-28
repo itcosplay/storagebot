@@ -41,6 +41,11 @@ async def get_storage_date(message:types.Message, state:FSMContext):
     amount = validate_thing_amount(message.text)
 
     if amount is False:
+        message_data = await message.answer(
+            'Пожалуйста, введите количество вещей числом не более 4'
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.thing_amount.set()
         return
 
     await state.update_data(thing_amount=amount)
@@ -109,6 +114,11 @@ async def set_month_amount(message:types.Message, state:FSMContext):
     month_amount = validate_month_amount(message.text)
 
     if month_amount is False:
+        message_data = await message.answer(
+            'Пожалуйста, введите количество месяцев числом не более 6'
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.month_amount.set()
         return
 
     await state.update_data(month_amount=month_amount)
@@ -136,6 +146,11 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
     weeks_amount = validate_weeks_amount(message.text)
 
     if weeks_amount is False:
+        message_data = await message.answer(
+            'Пожалуйста, введите количество недель числом не более 4'
+        )
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.weeks_amount.set()
         return
 
     await state.update_data(month_amount=0)

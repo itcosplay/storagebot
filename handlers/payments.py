@@ -9,19 +9,29 @@ from data import yookassa_test_token
 from utils import get_qr
 from utils import delete_user_qr
 from utils import get_qr_date
+from utils import validate_user_birthday
 
 
 @dp.message_handler(state=NaturalPerson.birthday)
-async def get_pay(message: types.Message, state:FSMContext):
+async def get_pay(message: types.Message, state: FSMContext):
     """send payment invoice"""
     state_data = await state.get_data()
     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
     await message.delete()
 
+    if not validate_user_birthday(message.text):
+        message = await message.answer(
+            text=('Не получилось обработать данные. \n'
+                  'Введите дату рождения в формате дд.мм.гггг.\n'
+                  'Например: 01.04.1994')
+        )
+        await state.update_data(message_to_delete=message.message_id)
+        return
+
     await state.update_data(birthday=message.text)
     # await state.finish()
 
-    message_data = await bot.send_invoice (
+    message_data = await bot.send_invoice(
         chat_id=message.from_user.id,
         title='Оплатить услугу',
         description= 'Бронь места на складе',
@@ -29,8 +39,8 @@ async def get_pay(message: types.Message, state:FSMContext):
         provider_token=yookassa_test_token,
         currency="RUB",
         start_parameter='unique-deep-linking-parameter',
-        prices = [{
-            "label": "руб", 
+        prices=[{
+            "label": "руб",
             "amount": 100000
         }]
     )
@@ -39,7 +49,7 @@ async def get_pay(message: types.Message, state:FSMContext):
 
 
 @dp.pre_checkout_query_handler(state='payments')
-async def process_pre_checkout_query(pre_checkput_query: types.PreCheckoutQuery, state:FSMContext):
+async def process_pre_checkout_query(pre_checkput_query: types.PreCheckoutQuery, state: FSMContext):
     """Do final confirmation to complete payment process."""
     state_data = await state.get_data()
     await bot.delete_message(pre_checkput_query.from_user.id, state_data['message_to_delete'])
@@ -57,7 +67,7 @@ async def process_afterpayment(message: types.Message, state: FSMContext):
         qr_date = get_qr_date(state_data)
         caption = f'Ваш доступ на склад до {qr_date}'
         photo = get_qr(message.from_user.id)
-        await bot.send_photo (
+        await bot.send_photo(
             message.from_user.id,
             photo=photo,
             caption=caption
