@@ -10,5 +10,6 @@ __all__ = [
     what_to_store_kb,
     season_things_kb,
     weeks_or_months_kb,
-    pay_kb
+    pay_kb,
+    get_location_kb,
 ]

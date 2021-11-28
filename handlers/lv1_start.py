@@ -22,10 +22,13 @@ async def get_location(message: types.Message, state: FSMContext):
     await NaturalPerson.location.set()
 
 
-@dp.message_handler(state=NaturalPerson.location, content_types=['location'])
+@dp.message_handler(state=NaturalPerson.location, content_types=['location', 'text'])
 async def get_select_storage(message: types.Message, state: FSMContext):
-    location = (message.location.latitude, message.location.longitude)
-    await state.update_data(location=location)
+    location = message.location
+    if location:
+        location = (location.latitude, location.longitude)
+        await state.update_data(location=location)
+
     await bot.send_message(
         chat_id=message.from_user.id,
         text='Выбери ближаший склад',
