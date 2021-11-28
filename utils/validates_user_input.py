@@ -1,3 +1,6 @@
+import datetime
+
+
 def validate_thing_amount(user_input):
     try:
         user_input = int(user_input)
@@ -54,6 +57,7 @@ def validate_cell_period(user_input):
 
 
 def validate_user_name(user_name):
+    """Validate if user's name doesn't contain any numbers"""
     try:
         if not any(letter.isdigit() for letter in user_name):
             return True
@@ -63,4 +67,9 @@ def validate_user_name(user_name):
 
 
 def validate_user_birthday(user_birthday):
-    pass
+    """Validate if user's birthday matches the format dd.mm.yyyy."""
+    try:
+        datetime.datetime.strptime(user_birthday, '%d.%m.%Y')
+        return True
+    except:
+        return False

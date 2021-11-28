@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 
 from loader import dp, bot
 from states import NaturalPerson
-from utils import validate_user_name, validate_user_birthday
+from utils import validate_user_name
 # from utils import validate_thing_amount
 # from utils import validate_month_amount
 # from utils import validate_weeks_amount
@@ -54,7 +54,7 @@ async def set_weeks_amount(message: types.Message, state: FSMContext):
 
     await state.update_data(passport=message.text)
 
-    message_data = await message.answer('Введите дату рождения')
+    message_data = await message.answer('Введите дату рождения в формате дд.мм.гггг')
     await state.update_data(message_to_delete=message_data.message_id)
     await NaturalPerson.birthday.set()
 
