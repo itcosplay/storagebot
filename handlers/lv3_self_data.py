@@ -19,10 +19,17 @@ async def set_date_from_buttons (
     await call.answer()
     await call.message.delete()
 
-    message_data = await call.message.answer('Введите ФИО')
-    await state.update_data(message_to_delete=message_data.message_id)
+    if call.data == 'book':
 
-    await NaturalPerson.fio.set()
+        message_data = await call.message.answer('Введите ФИО')
+        await state.update_data(message_to_delete=message_data.message_id)
+
+        await NaturalPerson.fio.set()
+
+    else call.data == 'promo':
+        message_data = await call.message.answer('Введите промокод')
+        await state.update_data(message_to_delete=message_data.message_id)
+
 
 
 @dp.message_handler(state=NaturalPerson.fio)

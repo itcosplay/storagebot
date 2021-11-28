@@ -99,6 +99,12 @@ def pay_kb():
             callback_data='book'
         )
     )
+    keyboard.add(
+        InlineKeyboardButton(
+            text='забронировать c промокодом',
+            callback_data='promo'
+        )
+    )
 
     return keyboard
 

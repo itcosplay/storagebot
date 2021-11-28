@@ -11,6 +11,7 @@ class NaturalPerson(StatesGroup):
     month_or_week = State()
     weeks_amount = State()
     month_amount = State()
+    final_sum = State()
     fio = State()
     passport = State()
     birthday = State()
