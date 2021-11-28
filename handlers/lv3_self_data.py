@@ -1,15 +1,12 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
+from data import promo
 from loader import dp, bot
 from states import NaturalPerson
 from utils import validate_user_name
-# from utils import validate_thing_amount
-# from utils import validate_month_amount
-# from utils import validate_weeks_amount
-# from utils import get_season_things_price
-# from keyboards import weeks_or_months_kb
-# from keyboards import pay_kb
+from utils import message_before_booking
+from keyboards import pay_kb
 
 
 @dp.callback_query_handler(state='self_data')
@@ -20,10 +17,39 @@ async def set_date_from_buttons(
     await call.answer()
     await call.message.delete()
 
-    message_data = await call.message.answer('Введите ФИО')
-    await state.update_data(message_to_delete=message_data.message_id)
+    if call.data == 'book':
 
-    await NaturalPerson.fio.set()
+        message_data = await call.message.answer('Введите ФИО')
+        await state.update_data(message_to_delete=message_data.message_id)
+
+        await NaturalPerson.fio.set()
+
+    else:
+
+        message_data = await call.message.answer('Введите промокод')
+        await state.update_data(message_to_delete=message_data.message_id)
+
+        await NaturalPerson.promo.set()
+
+
+@dp.message_handler(state=NaturalPerson.promo)
+async def set_weeks_amount(message:types.Message, state:FSMContext):
+    state_data = await state.get_data()
+    await bot.delete_message(message.chat.id, state_data['message_to_delete'])
+    await message.delete()
+
+    if message.text == promo:
+        final_sum = round(state_data['final_sum'] * 0.8)
+        await state.update_data(final_sum=final_sum)
+        message_data = await message.answer('Ваш промокод подтвержен! Введите ФИО')
+        await state.update_data(message_to_delete=message_data.message_id)
+        await NaturalPerson.fio.set()
+
+    else:
+        message_to_user = message_before_booking(state_data)
+        await message.answer('Такого промокода нет...\n' + message_to_user, 
+        reply_markup=pay_kb())
+        await state.set_state('self_data')
 
 
 @dp.message_handler(state=NaturalPerson.fio)
@@ -31,6 +57,7 @@ async def set_weeks_amount(message: types.Message, state: FSMContext):
     state_data = await state.get_data()
     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
     await message.delete()
+
     if not validate_user_name(message.text):
         message_data = await message.answer(
             text=('Не получилось обработать данные. \n'
@@ -58,19 +85,3 @@ async def set_weeks_amount(message: types.Message, state: FSMContext):
     await state.update_data(message_to_delete=message_data.message_id)
     await NaturalPerson.birthday.set()
 
-# @dp.message_handler(state=NaturalPerson.birthday)
-
-
-# @dp.message_handler(state=NaturalPerson.birthday)
-# async def set_weeks_amount(message:types.Message, state:FSMContext):
-#     state_data = await state.get_data()
-#     await bot.delete_message(message.chat.id, state_data['message_to_delete'])
-#     await message.delete()
-
-#     await state.update_data(birthday=message.text)
-
-#     message_data = await message.answer('ТУТ ОПЛАЧИВАЕТСЯ ЗАКАЗ')
-#     await state.update_data(message_to_delete=message_data.message_id)
-
-#     await state.set_state('payments')
-#     await state.finish()

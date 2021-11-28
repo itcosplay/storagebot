@@ -9,6 +9,7 @@ from utils import validate_month_amount
 from utils import validate_weeks_amount
 from utils import get_season_things_price
 from utils import message_before_booking
+from utils import get_final_sum
 from keyboards import weeks_or_months_kb
 from keyboards import pay_kb
 
@@ -125,6 +126,8 @@ async def set_month_amount(message:types.Message, state:FSMContext):
     await state.update_data(weeks_amount=0)
 
     state_data = await state.get_data()
+    final_sum = get_final_sum(state_data, price)
+    await state.update_data(final_sum=final_sum)
     message_to_user = message_before_booking(state_data)
 
     await message.answer (
@@ -157,6 +160,8 @@ async def set_weeks_amount(message:types.Message, state:FSMContext):
     await state.update_data(weeks_amount=weeks_amount)
 
     state_data = await state.get_data()
+    final_sum = get_final_sum(state_data, price)
+    await state.update_data(final_sum=final_sum)
     message_to_user = message_before_booking(state_data)
 
     await message.answer (
