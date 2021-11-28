@@ -67,9 +67,14 @@ def validate_user_name(user_name):
 
 
 def validate_user_birthday(user_birthday):
-    """Validate if user's birthday matches the format dd.mm.yyyy."""
+    """Validate user's birthday.
+
+    It matches the format dd.mm.yyyy.
+    It isn't in the future. 
+    """
     try:
-        datetime.datetime.strptime(user_birthday, '%d.%m.%Y')
-        return True
+        user_birthday = datetime.datetime.strptime(user_birthday, '%d.%m.%Y')
+        if user_birthday < datetime.datetime.now():
+            return True
     except:
         return False
